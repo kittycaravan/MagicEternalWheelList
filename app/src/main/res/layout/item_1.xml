@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:background="@drawable/selector_bg_selected_channel"
+        tools:context=".MainActivity">
+    <ImageView android:id="@+id/item_img" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="fitCenter"
+               android:paddingLeft="@dimen/recycler_item_padding_leftright" android:paddingRight="@dimen/recycler_item_padding_leftright"/>
+</RelativeLayout>
