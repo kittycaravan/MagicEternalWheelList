@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mTvLog5 = findViewById(R.id.log_5);
         mImgTop = findViewById(R.id.top);
         ////    실 데이터 입력(시작)  ////
+//        mAlReal.add(new RecyclerItem(null, null));
         mAlReal.add(new RecyclerItem("71314236", "http://vcast.co.kr/testimage/chimage1.png"));
         mAlReal.add(new RecyclerItem("34951562", "http://vcast.co.kr/testimage/chimage2.png"));
         mAlReal.add(new RecyclerItem("24413496", "http://vcast.co.kr/testimage/chimage3.png"));
