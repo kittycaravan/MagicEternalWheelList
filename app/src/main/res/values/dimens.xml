@@ -2,4 +2,8 @@
 <resources>
     <dimen name="recycler_width">300dp</dimen>
     <dimen name="recycler_item_padding_leftright">80dp</dimen>
+    <dimen name="recycler_height">380dp</dimen>
+    <dimen name="recycler_height_item_1">100dp</dimen>
+    <dimen name="recycler_height_item_2">80dp</dimen>
+    <dimen name="recycler_height_item_3">60dp</dimen>
 </resources>

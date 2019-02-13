@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final int SHOW_LENGTH = 5;
     RecyclerView mRv;
-    LinearLayoutManager mllm;
+    LinearLayoutManager mLlm;
     AdapterRecycler mAr;
     ArrayList<RecyclerItem> mAlVirtual = new ArrayList<>();
     ArrayList<RecyclerItem> mAlShow = new ArrayList<>();
@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         mTvLog3 = findViewById(R.id.log_3);
         mTvLog4 = findViewById(R.id.log_4);
         mImgTop = findViewById(R.id.top);
-
         ////    실 데이터 입력(시작)  ////
         mAlReal.add(new RecyclerItem("m1"));
         mAlReal.add(new RecyclerItem("m2"));
@@ -39,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
         mAlReal.add(new RecyclerItem("m4"));
         mAlReal.add(new RecyclerItem("m5"));
         mAlReal.add(new RecyclerItem("m6"));
-        mAlReal.add(new RecyclerItem("m6"));
-        mAlReal.add(new RecyclerItem("m6"));
         ////    실 데이터 입력(끝)  ////
-
         mRealListSize = mAlReal.size(); // 실 데이터 수 기록.
         ////    실 데이터 리스트의 수에 따른 예외 처리
         if(mRealListSize > 0){  // 중요 조건 : 실 데이터 수가 0개 초과만 처리
@@ -90,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 mAlVirtual.add(mAlReal.get(0));
                 mAlVirtual.add(mAlReal.get(1));
             } else {                        // 실 데이터 리스트 수가 5개 이상인 나머지 경우 : index 0,1 에는 실 데이터의 마지막 두 값을넣고, 그 다음 실데이터 한 세트를 마지막 2개 값을 제외하고 넣는다.
-                //todo 첫 선택 아이템이 3번째(index 2)에 위치하게 리스트를 구성해야함.
-//                for(int i=0;i<mRealListSize;i++){   // 가상 리스트에 실 리스트 데이터를 전달.
-//                    mAlVirtual.add(mAlReal.get(i));
-//                }
-                //todo
                 mAlVirtual.add(mAlReal.get(mRealListSize-2));
                 mAlVirtual.add(mAlReal.get(mRealListSize-1));
                 for(int i=0;i<mRealListSize - 2;i++){
@@ -106,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
             }
             mAr = new AdapterRecycler(mAlVirtual);  // 어댑터에 반영(가상리스트)
             mRv = findViewById(R.id.rv);
-            mllm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            mRv.setLayoutManager(mllm);
+            mLlm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            mRv.setLayoutManager(mLlm);
             mRv.setAdapter(mAr);
         }
     }
-
     private void reOrder(boolean isReverse){
         if(mRealListSize > 1){   // 실 리스트 아이템 수가 1개 이상일 때만 작동함.
             if(isReverse) {
