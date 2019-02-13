@@ -9,103 +9,149 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
-    RecyclerView rv;
-    LinearLayoutManager lm;
-    AdapterRecycler ar;
-    ArrayList<RecyclerItem> alReal = new ArrayList<>();
-    ArrayList<RecyclerItem> alShow = new ArrayList<>();
-    ImageView top,bot;
-    TextView log1,log2,log3,log4;
-    int realIndexForShowTop;
-    int realIndexForShowBot;
-    int mTotalLength;
+    private static final int SHOW_LENGTH = 5;
+    RecyclerView mRv;
+    LinearLayoutManager mllm;
+    AdapterRecycler mAr;
+    ArrayList<RecyclerItem> mAlVirtual = new ArrayList<>();
+    ArrayList<RecyclerItem> mAlShow = new ArrayList<>();
+    ArrayList<RecyclerItem> mAlReal = new ArrayList<>();
+    ImageView mImgTop, mImgBot;
+    TextView mTvLog1, mTvLog2, mTvLog3, mTvLog4;
+    int mRealIndexForShowTop = 0;
+    int mRealIndexForShowBot = 4;
+    int mRealListSize;
     int mCurrentSelectedIndex = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        log1 = findViewById(R.id.log_1);
-        log2 = findViewById(R.id.log_2);
-        log3 = findViewById(R.id.log_3);
-        log4 = findViewById(R.id.log_4);
-        top = findViewById(R.id.top);
-        top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ////    무한궤도    ////
-                reOrder(true);  //재배열 머리에 삽입
+        mTvLog1 = findViewById(R.id.log_1);
+        mTvLog2 = findViewById(R.id.log_2);
+        mTvLog3 = findViewById(R.id.log_3);
+        mTvLog4 = findViewById(R.id.log_4);
+        mImgTop = findViewById(R.id.top);
+
+        ////    실 데이터 입력(시작)  ////
+        mAlReal.add(new RecyclerItem("m1"));
+        mAlReal.add(new RecyclerItem("m2"));
+        mAlReal.add(new RecyclerItem("m3"));
+        mAlReal.add(new RecyclerItem("m4"));
+        mAlReal.add(new RecyclerItem("m5"));
+        mAlReal.add(new RecyclerItem("m6"));
+        mAlReal.add(new RecyclerItem("m6"));
+        mAlReal.add(new RecyclerItem("m6"));
+        ////    실 데이터 입력(끝)  ////
+
+        mRealListSize = mAlReal.size(); // 실 데이터 수 기록.
+        ////    실 데이터 리스트의 수에 따른 예외 처리
+        if(mRealListSize > 0){  // 중요 조건 : 실 데이터 수가 0개 초과만 처리
+            ////    클릭 리스너 등록(시작)   ////
+            mImgTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reOrder(true);  // 무한궤도 처리 : 재배열 머리에 삽입
+                }
+            });
+            mImgBot = findViewById(R.id.bot);
+            mImgBot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reOrder(false); // 무한궤도 처리 : 재배열 꼬리에 삽입
+                }
+            });
+            ////    클릭 리스너 등록(끝)   ////
+            if(mRealListSize == 1) {        // 실 데이터 리스트 수가 1개 일 때 : 0,1,3,4 index 에는 item view 를 gone 처리 하기위한 데이터를 넣고, 2 index에만 1개뿐인 데이터를 넣음.
+                mAlVirtual.add(new RecyclerItem("m0"));
+                mAlVirtual.add(new RecyclerItem("m0"));
+                mAlVirtual.add(mAlReal.get(0));
+                mAlVirtual.add(new RecyclerItem("m0"));
+                mAlVirtual.add(new RecyclerItem("m0"));
+            } else if(mRealListSize == 2){  // 실 데이터 리스트 수가 2개 일 때 : 실 데이터 세트 3개를 가상 리스트에 더해준다.
+                mAlVirtual.add(mAlReal.get(0));
+                mAlVirtual.add(mAlReal.get(1));
+                mAlVirtual.add(mAlReal.get(0));
+                mAlVirtual.add(mAlReal.get(1));
+                mAlVirtual.add(mAlReal.get(0));
+                mAlVirtual.add(mAlReal.get(1));
+            } else if(mRealListSize == 3){  // 실 데이터 리스트 수가 3개 일 때 : index 0,1 에는 실 데이터의 마지막 두 값을넣고, 그 다음 실데이터 한 세트를 넣고, 마지막에 실데이터의 맨 첫값을 넣는다.
+                mAlVirtual.add(mAlReal.get(mRealListSize-2));
+                mAlVirtual.add(mAlReal.get(mRealListSize-1));
+                for(int i=0;i<mRealListSize;i++){
+                    mAlVirtual.add(mAlReal.get(i));
+                }
+                mAlVirtual.add(mAlReal.get(0));
+            } else if(mRealListSize == 4){  // 실 데이터 리스트 수가 4개 일 때 : index 0,1 에는 실 데이터의 마지막 두 값을넣고, 그 다음 실데이터 한 세트를 넣고, 마지막에 실데이터의 맨 첫값, 두번째 값을 넣는다.
+                mAlVirtual.add(mAlReal.get(mRealListSize-2));
+                mAlVirtual.add(mAlReal.get(mRealListSize-1));
+                for(int i=0;i<mRealListSize;i++){
+                    mAlVirtual.add(mAlReal.get(i));
+                }
+                mAlVirtual.add(mAlReal.get(0));
+                mAlVirtual.add(mAlReal.get(1));
+            } else {                        // 실 데이터 리스트 수가 5개 이상인 나머지 경우 : index 0,1 에는 실 데이터의 마지막 두 값을넣고, 그 다음 실데이터 한 세트를 마지막 2개 값을 제외하고 넣는다.
+                //todo 첫 선택 아이템이 3번째(index 2)에 위치하게 리스트를 구성해야함.
+//                for(int i=0;i<mRealListSize;i++){   // 가상 리스트에 실 리스트 데이터를 전달.
+//                    mAlVirtual.add(mAlReal.get(i));
+//                }
+                //todo
+                mAlVirtual.add(mAlReal.get(mRealListSize-2));
+                mAlVirtual.add(mAlReal.get(mRealListSize-1));
+                for(int i=0;i<mRealListSize - 2;i++){
+                    mAlVirtual.add(mAlReal.get(i));
+                }
             }
-        });
-        bot = findViewById(R.id.bot);
-        bot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ////    무한궤도    ////
-                reOrder(false); //재배열 꼬리에 삽입
+            for (int i = 0; i < SHOW_LENGTH; i++) { // 보이는 리스트에 SHOW_LENGTH 개 세팅.
+                mAlShow.add(mAlVirtual.get(i));
             }
-        });
-        alShow.add(new RecyclerItem("m1"));
-        alShow.add(new RecyclerItem("m2"));
-        alShow.add(new RecyclerItem("m3"));
-        alShow.add(new RecyclerItem("m4"));
-        alShow.add(new RecyclerItem("m5"));
-
-        alReal.add(new RecyclerItem("m1"));
-        alReal.add(new RecyclerItem("m2"));
-        alReal.add(new RecyclerItem("m3"));
-        alReal.add(new RecyclerItem("m4"));
-        alReal.add(new RecyclerItem("m5"));
-        alReal.add(new RecyclerItem("m6"));
-
-        realIndexForShowTop = 0;
-        realIndexForShowBot = 4;
-
-        mTotalLength = alReal.size();
-        rv = findViewById(R.id.rv);
-        lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv.setLayoutManager(lm);
-        ar = new AdapterRecycler(alReal);
-        rv.setAdapter(ar);
+            mAr = new AdapterRecycler(mAlVirtual);  // 어댑터에 반영(가상리스트)
+            mRv = findViewById(R.id.rv);
+            mllm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            mRv.setLayoutManager(mllm);
+            mRv.setAdapter(mAr);
+        }
     }
 
     private void reOrder(boolean isReverse){
-        if(isReverse) {
-            mCurrentSelectedIndex--;
-            if(mCurrentSelectedIndex == -1){
-                mCurrentSelectedIndex = alReal.size() - 1;
+        if(mRealListSize > 1){   // 실 리스트 아이템 수가 1개 이상일 때만 작동함.
+            if(isReverse) {
+                mCurrentSelectedIndex--;
+                if(mCurrentSelectedIndex == -1){
+                    mCurrentSelectedIndex = mAlVirtual.size() - 1;
+                }
+                mRealIndexForShowTop--;
+                if(mRealIndexForShowTop == -1){
+                    mRealIndexForShowTop = mAlVirtual.size() - 1;
+                }
+                mRealIndexForShowBot--;
+                if(mRealIndexForShowBot == -1){
+                    mRealIndexForShowBot = mAlVirtual.size() - 1;
+                }
+                mAlShow.remove(4);   // 보이는 리스트의 마지막꺼 제거하고
+                mAlShow.add(0, mAlVirtual.get(mRealIndexForShowTop));   // 보이는 리스트의 첫 index 에 실 데이터의 보이는 리스트용 첫 index 값을 add.
+            } else {
+                mCurrentSelectedIndex++;
+                if(mCurrentSelectedIndex == mAlVirtual.size()){
+                    mCurrentSelectedIndex = 0;
+                }
+                mRealIndexForShowTop++;
+                if(mRealIndexForShowTop == mAlVirtual.size()){
+                    mRealIndexForShowTop = 0;
+                }
+                mRealIndexForShowBot++;
+                if(mRealIndexForShowBot == mAlVirtual.size()){
+                    mRealIndexForShowBot = 0;
+                }
+                mAlShow.remove(0);   // 보이는 리스트의 맨 처음꺼 제거하고
+                mAlShow.add(mAlVirtual.get(mRealIndexForShowBot));   // 보이는 리스트의 마지막 4 index 에 실 데이터의 보이는 리스트용 마지막 index 값을 add.
             }
-            realIndexForShowTop--;
-            if(realIndexForShowTop == -1){
-                realIndexForShowTop = alReal.size() - 1;
-            }
-            realIndexForShowBot--;
-            if(realIndexForShowBot == -1){
-                realIndexForShowBot = alReal.size() - 1;
-            }
-            alShow.remove(4);   // 보이는 리스트의 마지막꺼 제거하고
-            alShow.add(0, alReal.get(realIndexForShowTop));   // 보이는 리스트의 첫 index 에 실 데이터의 보이는 리스트용 첫 index 값을 add.
-        } else {
-            mCurrentSelectedIndex++;
-            if(mCurrentSelectedIndex == alReal.size()){
-                mCurrentSelectedIndex = 0;
-            }
-            realIndexForShowTop++;
-            if(realIndexForShowTop == alReal.size()){
-                realIndexForShowTop = 0;
-            }
-            realIndexForShowBot++;
-            if(realIndexForShowBot == alReal.size()){
-                realIndexForShowBot = 0;
-            }
-            alShow.remove(0);   // 보이는 리스트의 맨 처음꺼 제거하고
-            alShow.add(alReal.get(realIndexForShowBot));   // 보이는 리스트의 마지막 4 index 에 실 데이터의 보이는 리스트용 마지막 index 값을 add.
+            mAr.setItems(mAlShow);    //어댑터에 재 반영
+            mAr.notifyDataSetChanged();  //어댑터 다시 그리기
+            ////    로그    ////
+            mTvLog4.setText("mRealIndexForShowTop : "+ mRealIndexForShowTop);
+            mTvLog3.setText("mCurrentSelectedIndex : "+mCurrentSelectedIndex);
+            mTvLog2.setText("mRealIndexForShowBot : "+ mRealIndexForShowBot);
+            mTvLog1.setText("mAlVirtual size:"+ mAlVirtual.size());
         }
-        ar.setItems(alShow);    //어댑터에 재 반영
-        ar.notifyDataSetChanged();  //어댑터 다시 그리기
-        ////    로그    ////
-        log4.setText("mCurrentSelectedIndex : "+mCurrentSelectedIndex);
-        log3.setText("realIndexForShowTop : "+realIndexForShowTop);
-        log2.setText("realIndexForShowBot : "+realIndexForShowBot);
-        log1.setText("alReal size:"+ alReal.size());
     }
 }
