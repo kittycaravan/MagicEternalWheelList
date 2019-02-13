@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<RecyclerItem> mAlShow = new ArrayList<>();
     ArrayList<RecyclerItem> mAlReal = new ArrayList<>();
     ImageView mImgTop, mImgBot;
-    TextView mTvLog1, mTvLog2, mTvLog3, mTvLog4;
+    TextView mTvLog1, mTvLog2, mTvLog3, mTvLog4, mTvLog5;
     int mRealIndexForShowTop = 0;
     int mRealIndexForShowBot = 4;
     int mRealListSize;
@@ -30,14 +30,15 @@ public class MainActivity extends AppCompatActivity {
         mTvLog2 = findViewById(R.id.log_2);
         mTvLog3 = findViewById(R.id.log_3);
         mTvLog4 = findViewById(R.id.log_4);
+        mTvLog5 = findViewById(R.id.log_5);
         mImgTop = findViewById(R.id.top);
         ////    실 데이터 입력(시작)  ////
-        mAlReal.add(new RecyclerItem("m1", "http://vcast.co.kr/testimage/chimage1.png"));
-        mAlReal.add(new RecyclerItem("m2", "http://vcast.co.kr/testimage/chimage2.png"));
-        mAlReal.add(new RecyclerItem("m3", "http://vcast.co.kr/testimage/chimage3.png"));
-        mAlReal.add(new RecyclerItem("m4", "http://vcast.co.kr/testimage/chimage4.png"));
-        mAlReal.add(new RecyclerItem("m5", "http://vcast.co.kr/testimage/chimage5.png"));
-        mAlReal.add(new RecyclerItem("m6", "http://vcast.co.kr/testimage/chimage6.png"));
+        mAlReal.add(new RecyclerItem("71314236", "http://vcast.co.kr/testimage/chimage1.png"));
+        mAlReal.add(new RecyclerItem("34951562", "http://vcast.co.kr/testimage/chimage2.png"));
+        mAlReal.add(new RecyclerItem("24413496", "http://vcast.co.kr/testimage/chimage3.png"));
+        mAlReal.add(new RecyclerItem("92992670", "http://vcast.co.kr/testimage/chimage4.png"));
+        mAlReal.add(new RecyclerItem("51537700", "http://vcast.co.kr/testimage/chimage5.png"));
+        mAlReal.add(new RecyclerItem("32898409", "http://vcast.co.kr/testimage/chimage6.png"));
         ////    실 데이터 입력(끝)  ////
         mRealListSize = mAlReal.size(); // 실 데이터 수 기록.
         ////    실 데이터 리스트의 수에 따른 예외 처리
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             mAr.setItems(mAlShow);    //어댑터에 재 반영
             mAr.notifyDataSetChanged();  //어댑터 다시 그리기
             ////    로그    ////
+            mTvLog5.setText("chId : "+ mAlVirtual.get(mCurrentSelectedIndex).getChId());
             mTvLog4.setText("mRealIndexForShowTop : "+ mRealIndexForShowTop);
             mTvLog3.setText("mCurrentSelectedIndex : "+mCurrentSelectedIndex);
             mTvLog2.setText("mRealIndexForShowBot : "+ mRealIndexForShowBot);
