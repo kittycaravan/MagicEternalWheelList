@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
         mTvLog4 = findViewById(R.id.log_4);
         mImgTop = findViewById(R.id.top);
         ////    실 데이터 입력(시작)  ////
-        mAlReal.add(new RecyclerItem("m1"));
-        mAlReal.add(new RecyclerItem("m2"));
-        mAlReal.add(new RecyclerItem("m3"));
-        mAlReal.add(new RecyclerItem("m4"));
-        mAlReal.add(new RecyclerItem("m5"));
-        mAlReal.add(new RecyclerItem("m6"));
+        mAlReal.add(new RecyclerItem("m1", "http://vcast.co.kr/testimage/chimage1.png"));
+        mAlReal.add(new RecyclerItem("m2", "http://vcast.co.kr/testimage/chimage2.png"));
+        mAlReal.add(new RecyclerItem("m3", "http://vcast.co.kr/testimage/chimage3.png"));
+        mAlReal.add(new RecyclerItem("m4", "http://vcast.co.kr/testimage/chimage4.png"));
+        mAlReal.add(new RecyclerItem("m5", "http://vcast.co.kr/testimage/chimage5.png"));
+        mAlReal.add(new RecyclerItem("m6", "http://vcast.co.kr/testimage/chimage6.png"));
         ////    실 데이터 입력(끝)  ////
         mRealListSize = mAlReal.size(); // 실 데이터 수 기록.
         ////    실 데이터 리스트의 수에 따른 예외 처리
@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
             });
             ////    클릭 리스너 등록(끝)   ////
             if(mRealListSize == 1) {        // 실 데이터 리스트 수가 1개 일 때 : 0,1,3,4 index 에는 item view 를 gone 처리 하기위한 데이터를 넣고, 2 index에만 1개뿐인 데이터를 넣음.
-                mAlVirtual.add(new RecyclerItem("m0"));
-                mAlVirtual.add(new RecyclerItem("m0"));
+                mAlVirtual.add(new RecyclerItem("gone", ""));
+                mAlVirtual.add(new RecyclerItem("gone", ""));
                 mAlVirtual.add(mAlReal.get(0));
-                mAlVirtual.add(new RecyclerItem("m0"));
-                mAlVirtual.add(new RecyclerItem("m0"));
+                mAlVirtual.add(new RecyclerItem("gone", ""));
+                mAlVirtual.add(new RecyclerItem("gone", ""));
             } else if(mRealListSize == 2){  // 실 데이터 리스트 수가 2개 일 때 : 실 데이터 세트 3개를 가상 리스트에 더해준다.
                 mAlVirtual.add(mAlReal.get(0));
                 mAlVirtual.add(mAlReal.get(1));
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < SHOW_LENGTH; i++) { // 보이는 리스트에 SHOW_LENGTH 개 세팅.
                 mAlShow.add(mAlVirtual.get(i));
             }
-            mAr = new AdapterRecycler(mAlVirtual);  // 어댑터에 반영(가상리스트)
+            mAr = new AdapterRecycler(mAlVirtual, this);  // 어댑터에 반영(가상리스트)
             mRv = findViewById(R.id.rv);
             mLlm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             mRv.setLayoutManager(mLlm);

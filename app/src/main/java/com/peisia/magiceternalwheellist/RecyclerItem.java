@@ -1,17 +1,15 @@
 package com.peisia.magiceternalwheellist;
 public class RecyclerItem {
-    private String categoryName;
-    public RecyclerItem(String categoryName) {
-        this.categoryName = categoryName;
+    private String chId;
+    private String imgUrl;
+    public RecyclerItem(String chId, String imgUrl) {
+        this.chId = chId;
+        this.imgUrl = imgUrl;
     }
-    // 복사 생성자
-    public RecyclerItem(RecyclerItem r) {
-        this.categoryName = r.getCategoryName();
+    public String getChId() {
+        return chId;
     }
-    public String getCategoryName() {
-        return categoryName;
-    }
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }

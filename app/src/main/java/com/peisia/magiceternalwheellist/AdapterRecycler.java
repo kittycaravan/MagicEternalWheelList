@@ -1,5 +1,9 @@
 package com.peisia.magiceternalwheellist;
+import com.bumptech.glide.Glide;
+
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +14,11 @@ public class AdapterRecycler extends RecyclerView.Adapter <AdapterRecycler.ItemV
     private static final int TYPE_0 = 0;    // 현재 선택된 아이템
     private static final int TYPE_1 = 1;    // 현재 선택된 아이템의 직전 직후 아이템.
     private static final int TYPE_2 = 2;    // 현재 선택된 아이템의 전전, 후후 아이템.
-    private int currentNo;
     ArrayList<RecyclerItem> mItems;
-    public AdapterRecycler(ArrayList<RecyclerItem> items){
+    private Context mContext;
+    public AdapterRecycler(ArrayList<RecyclerItem> items, Context context){
         mItems = items;
+        mContext = context;
     }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,29 +36,15 @@ public class AdapterRecycler extends RecyclerView.Adapter <AdapterRecycler.ItemV
     }
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        String name = mItems.get(position).getCategoryName();
+        String name = mItems.get(position).getChId();
         holder.mImg.setVisibility(View.VISIBLE);
+
         switch (name){
-            case "m0":
+            case "gone":
                 holder.mImg.setVisibility(View.GONE);
                 break;
-            case "m1":
-                holder.mImg.setImageResource(R.drawable.c1);
-                break;
-            case "m2":
-                holder.mImg.setImageResource(R.drawable.c2);
-                break;
-            case "m3":
-                holder.mImg.setImageResource(R.drawable.c3);
-                break;
-            case "m4":
-                holder.mImg.setImageResource(R.drawable.c4);
-                break;
-            case "m5":
-                holder.mImg.setImageResource(R.drawable.c5);
-                break;
-            case "m6":
-                holder.mImg.setImageResource(R.drawable.c6);
+            default:
+                Glide.with(mContext).load(mItems.get(position).getImgUrl()).into(holder.mImg);
                 break;
         }
     }
@@ -78,10 +69,6 @@ public class AdapterRecycler extends RecyclerView.Adapter <AdapterRecycler.ItemV
         } else {
             return TYPE_2;
         }
-    }
-
-    public void setCurrentNo(int currentNo) {
-        this.currentNo = currentNo;
     }
     public void setItems(ArrayList<RecyclerItem> items) {
         mItems = items;
