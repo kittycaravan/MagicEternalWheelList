@@ -8,16 +8,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     private static final int SHOW_LENGTH = 5;
-    RecyclerView mRv;
+    @BindView(R.id.log_1) TextView mTvLog1;
+    @BindView(R.id.log_2) TextView mTvLog2;
+    @BindView(R.id.log_3) TextView mTvLog3;
+    @BindView(R.id.log_4) TextView mTvLog4;
+    @BindView(R.id.log_5) TextView mTvLog5;
+    @BindView(R.id.rv) RecyclerView mRv;
     LinearLayoutManager mLlm;
     AdapterRecycler mAr;
     ArrayList<RecyclerItem> mAlVirtual = new ArrayList<>();
     ArrayList<RecyclerItem> mAlShow = new ArrayList<>();
     ArrayList<RecyclerItem> mAlReal = new ArrayList<>();
     ImageView mImgTop, mImgBot;
-    TextView mTvLog1, mTvLog2, mTvLog3, mTvLog4, mTvLog5;
     int mRealIndexForShowTop = 0;
     int mRealIndexForShowBot = 4;
     int mRealListSize;
@@ -26,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initChannel();
     }
     private void reOrder(boolean isReverse){
@@ -73,12 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initChannel(){
-        mTvLog1 = findViewById(R.id.log_1);
-        mTvLog2 = findViewById(R.id.log_2);
-        mTvLog3 = findViewById(R.id.log_3);
-        mTvLog4 = findViewById(R.id.log_4);
-        mTvLog5 = findViewById(R.id.log_5);
-
         ////    실 데이터 입력(시작)  ////
 //        mAlReal.add(new RecyclerItem(null, null));
         mAlReal.add(new RecyclerItem("71314236", "http://vcast.co.kr/testimage/chimage1.png"));
@@ -146,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 mAlShow.add(mAlVirtual.get(i));
             }
             mAr = new AdapterRecycler(mAlVirtual, this);  // 어댑터에 반영(가상리스트)
-            mRv = findViewById(R.id.rv);
             mLlm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             mRv.setLayoutManager(mLlm);
             mRv.setAdapter(mAr);
